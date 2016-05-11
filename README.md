@@ -1,6 +1,6 @@
 # [react-redux-demo](https://github.com/c764023940/reactDemo.git)
 
-Yet another React and Redux based web application starter kit. [Demo](http://ec2-52-10-209-45.us-west-2.compute.amazonaws.com/)
+ React and Redux based web application starter kit. [Demo]
 
 ### Install and Run the Dev Server (Linux/OSX)
 
