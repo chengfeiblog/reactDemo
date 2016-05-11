@@ -1,10 +1,6 @@
-# [react-redux-starter-kit](https://github.com/cloudmu/react-redux-starter-kit)
+# [react-redux-demo](https://github.com/c764023940/reactDemo.git)
 
 Yet another React and Redux based web application starter kit. [Demo](http://ec2-52-10-209-45.us-west-2.compute.amazonaws.com/)
-
-### Overview
-
-This is yet another React and Redux based web application starter kit. However, this one attempts to go beyond the typical simple boilerplates, by showcasing several great technologies (such as [React](https://github.com/facebook/react), [Redux](https://github.com/gaearon/redux), [React-Router](https://github.com/rackt/react-router), [Fixed-Data-Table](https://github.com/facebook/fixed-data-table), [Bootstrap](https://github.com/twbs/bootstrap), [Babel](http://babeljs.io), [Webpack](http://webpack.github.io) and [JWT](https://jwt.io)) used together to develop a more complex web application, with features such as authentication, navigation, asynchronous data fetching, error handling, caching and pagination, etc.
 
 ### Install and Run the Dev Server (Linux/OSX)
 
