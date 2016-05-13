@@ -15,7 +15,7 @@ router.post('/login', function(req, res) {
 
         //res.json({'user': credentials.user, 'role': 'ADMIN'});   
       }else{
-        res.status(401).json({'message' : 'Invalid user/password'});
+        res.status(401).json({'message' : '账户/密码不正确'});
       }
 });
 

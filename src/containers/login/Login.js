@@ -1,15 +1,39 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes,findDOMNode } from 'react';
 import { connect } from 'react-redux';
 import { login } from '../../actions/auth';
 
 import './login.css';
-
+const initState = {
+  loginError : null,
+  isUsernameError : false,
+  isPasswordError : false 
+};
 class Login extends Component {
   constructor(props) {
     super(props);
+    this.state = Object.assgin({}, initState);
     this.handleLogin = this.handleLogin.bind(this);
   }
-
+  /**
+   * 组件渲染之后
+   */
+  componentDidMount() {
+    findDOMNode(this.refs.username).focus();
+  }
+  /**
+   * 
+   */
+  componentDidUpdate() {
+    console.log(this.props.loginError);
+    if(this.props.loginError === "账户/密码不正确") {
+      if(!this.state.isUsernameError) {
+        let newState = Object.assgin({},this.state);
+        newState.isUsernameError = true;
+        this.setState(newState);
+      }
+      findDOMNode(this.refs.username).focus();
+    }
+  }
   componentWillReceiveProps(nextProps) {
     if (nextProps.user) {
       //登录之后，跳转到主页或者想要去的页面
@@ -26,11 +50,37 @@ class Login extends Component {
     event.preventDefault();
     const username = this.refs.username;
     const password = this.refs.password;
-    this.props.dispatch(login(username.value, password.value));
-    username.value = '';
-    password.value = '';
+    let newState = this.checkLoginFrom(username.value, password.value);
+    this.setState(newState);
+    if(!newState.loginError) {
+      this.props.dispatch(login(username.value, password.value));
+      username.value = '';
+      password.value = '';
+    }
   }
-
+  /**
+   * 校验
+   */
+  checkLoginFrom(username, password) {
+    let newState = Object.assgin({},initState);
+    if(username === "") {
+      newState.loginError = "账号必须填写";
+      newState.isUsernameError = true;
+      return;
+    }
+    if(password === "") {
+      newState.loginError = "密码必须填写";
+      newState.isPasswordError = true;
+      return;
+    }
+    return newState;
+  }
+  /**
+   * 根据错误返回相对的CSS样式
+   */
+  getInputClass(value) {
+    return ("form-group" + (value ? "has-error" : ""));
+  }
   render() {
     const { user, loginError } = this.props;
     return (
@@ -42,12 +92,12 @@ class Login extends Component {
               <form className="card-block">
                 <div className="input-group">
                   <span className="input-group-addon"><i className="fa fa-user"/></span>
-                  <input type="text" ref="username" className="form-control" placeholder="请输入用户名" required autoFocus/>
+                  <input type="text" ref="username" className="form-control" placeholder="请输入用户名"/>
                 </div>
 
                 <div className="input-group">
                   <span className="input-group-addon"><i className="fa fa-lock"/></span>
-                  <input type="password" ref="password" className="form-control" placeholder="请输入密码" required/>
+                  <input type="password" ref="password" className="form-control" placeholder="请输入密码"/>
                 </div>
 
                 <div className="checkbox">
@@ -59,7 +109,7 @@ class Login extends Component {
                 {
                   !user && loginError &&
                   <div className="alert alert-danger">
-                    {loginError.message}. 使用初始化密码登录.
+                    {loginError.message}
                   </div>
                 }
 

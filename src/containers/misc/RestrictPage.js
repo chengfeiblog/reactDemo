@@ -6,8 +6,7 @@ class RestrictPage extends Component {
     const { user } = this.props;
     const { router } = this.context;
 
-    // If this page is restricted, go to loginPage first.
-    // (But pass on this page's path in order to redirect back upon login)
+    //没有登录就路由到登录页面
     if (!user) {
       const path = this.props.location.pathname;
       router.push(`/login?redirect=${path}`);
