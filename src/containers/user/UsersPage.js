@@ -38,7 +38,7 @@ class UsersPage extends Component {
    * 这个方法在初次渲染时或通过forceUpdate()方法进行渲染时不会被调用
    */
   shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.page !== this.props.page;
+    return true;
   }
   /**
    * 组件实例即将重新渲染时被调用（不能在此方法内调用setState()）
