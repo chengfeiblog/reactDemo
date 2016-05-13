@@ -12,17 +12,52 @@ class UsersPage extends Component {
     this.handlePreviousPageClick = this.handlePreviousPageClick.bind(this);
     this.handleRefreshClick = this.handleRefreshClick.bind(this);
   }
-
+  /**
+   * 组件实例即将挂接（初次渲染）时被调用,只会被调用一次
+   */
+  componentWillMount() {
+    
+  }
+  /**
+   * 组件实例挂接（初次渲染）后被调用,只会被调用一次
+   */
   componentDidMount() {
     const { dispatch, page } = this.props;
     dispatch(fetchTopUsersIfNeeded(page));
   }
-
+  /**
+   * 组件实例即将设置新属性时被调用(在此方法内调用setState()不会引起重新渲染。)
+   * 
+   */
   componentWillReceiveProps(nextProps) {
     const { dispatch, page } = nextProps;
     dispatch(fetchTopUsersIfNeeded(page));
   }
-
+  /**
+   * 组件实例即将重新渲染时被调用（默认返回值是 true, 返回false表示，不渲染）
+   * 这个方法在初次渲染时或通过forceUpdate()方法进行渲染时不会被调用
+   */
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.page !== this.props.page;
+  }
+  /**
+   * 组件实例即将重新渲染时被调用（不能在此方法内调用setState()）
+   */
+  componentWillUpdate(nextProps, nextState) {
+    
+  }
+  /**
+   * 组件实例重新渲染后被调用
+   */
+  componentDidUpdate(prevProps, prevState) {
+    
+  }
+  /**
+   * 组件实例即将从DOM树移除时被调用
+   */
+  componentWillUnmount() {
+    
+  }
   handleNextPageClick() {
     const { page, users } = this.props;
     if (users.length > 0) {

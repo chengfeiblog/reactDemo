@@ -36,8 +36,11 @@ let members = [
  * get members
  */
 router.post('/',function (req, res, next) {
+    let params = req.body;
+    console.log(params.page);
       res.status(200).json({
-          items: members
+          items: members,
+          total_count: members.length
       })
 })
 module.exports = router;

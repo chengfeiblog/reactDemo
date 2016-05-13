@@ -44,7 +44,7 @@ export function login(user, password) {
   return dispatch => {
     dispatch(loginRequest(user));
 
-    return fetch('/api/login', {
+    return fetch('/api/users/login', {
       method: 'post',
       headers: {
         Accept: 'application/json',
@@ -104,7 +104,7 @@ function logoutFailure(user, error) {
 export function logout(user) {
   return dispatch => {
     dispatch(logoutRequest(user));
-    return fetch('/api/logout', {
+    return fetch('/api/users/logout', {
       method: 'post',
       headers: {
         Accept: 'application/json',

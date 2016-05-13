@@ -7,9 +7,8 @@ import path from 'path';
 import http from 'http';
 import bodyParser from 'body-parser';
 import webpackConfig from './webpack.config';
-
-import jwt from 'jsonwebtoken';
-import jwtConfig from './jwt.config.json';
+//导入路由
+import users from './routes/users';
 import members from './routes/members';
 
 const isProduction = process.env.NODE_ENV === 'production';
@@ -53,27 +52,10 @@ const port = isProduction ? (process.env.PORT || 80) : 3000;
 
 app.get('*', function (request, response){
   response.sendFile(path.resolve(__dirname, '', 'index.html'))
-})
-
-app.post('/api/login', function(req, res) {
-      const credentials = req.body;
-      if(credentials.user==='admin' && credentials.password==='password'){
-
-        const profile = {'user': credentials.user, 'role': 'ADMIN'};
-        const jwtToken = jwt.sign(profile, jwtConfig.secret, {'expiresIn' : 5*60}); 
-        res.status(200).json({
-          id_token: jwtToken
-        });
-
-        //res.json({'user': credentials.user, 'role': 'ADMIN'});   
-      }else{
-        res.status(401).json({'message' : 'Invalid user/password'});
-      }
 });
 
-app.post('/api/logout', function(req, res) {
-    res.status(200).json({'message' : '用户登出'});   
-});
+app.use('/api/users', users);
+
 app.use('/api/members',members);
 
 
