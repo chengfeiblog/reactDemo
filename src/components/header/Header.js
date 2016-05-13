@@ -15,7 +15,7 @@ export default class Header extends Component {
     const isAboutPage = pathname.indexOf('about') > -1;
     const isUsersPage = pathname.indexOf('users') > -1;
     const isReposPage = pathname.indexOf('repos') > -1;
-    const isMemberListPage = pathname.indexOf('MemberList') > -1;
+    const isMemberListPage = pathname.indexOf('memberListPage') > -1;
     return (
       !isLoginPage &&
       <div className="pos-f-t">

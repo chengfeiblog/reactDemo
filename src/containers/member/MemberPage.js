@@ -5,38 +5,9 @@ import {cyan500} from 'material-ui/styles/colors';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'; 
 import {invalidateMembersPage, selectMembersPage, fetchTopMembersIfNeed } from '../../actions/members';
-const tableData = [
-  {
-    name: '成飞',
-    status: '可用',
-    selected: true,
-  },
-  {
-    name: '成伟',
-    status: '不可用',
-  },
-  {
-    name: '成领',
-    status: '可用',
-    selected: true,
-  },
-  {
-    name: '成燕',
-    status: '可用',
-  },
-  {
-    name: '成二头',
-    status: '可用',
-  },
-  {
-    name: '周宏儿',
-    status: '可用',
-  },
-  {
-    name: '成姐',
-    status: '可用',
-  },
-];
+/**
+ * 设置主题
+ */
 const muiTheme = getMuiTheme({
   palette: {
     textColor: cyan500,
@@ -79,6 +50,7 @@ class MemberPage extends Component{
       dispatch(invalidateMembersPage(page));
     }
     render() {
+      const {members} = this.props;
         return (
           <MuiThemeProvider muiTheme={muiTheme}>
             <div className="container-fluid">
@@ -92,7 +64,7 @@ class MemberPage extends Component{
                   </TableHeader>
                   <TableBody>
                       {
-                          tableData.map((row, index) => (
+                          members.map((row, index) => (
                               <TableRow key={index} selected={row.selected}>
                                   <TableRowColumn>{index}</TableRowColumn>
                                   <TableRowColumn>{row.name}</TableRowColumn>

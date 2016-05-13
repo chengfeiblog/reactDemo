@@ -10,7 +10,7 @@ import webpackConfig from './webpack.config';
 
 import jwt from 'jsonwebtoken';
 import jwtConfig from './jwt.config.json';
-
+import members from './routes/members';
 
 const isProduction = process.env.NODE_ENV === 'production';
 const isDeveloping = !isProduction;
@@ -74,9 +74,10 @@ app.post('/api/login', function(req, res) {
 app.post('/api/logout', function(req, res) {
     res.status(200).json({'message' : '用户登出'});   
 });
+app.use('/api/members',members);
 
-// We need to use basic HTTP service to proxy
-// websocket requests from webpack
+
+// 创建服务
 const server = http.createServer(app);
 
 server.listen(port, function (err, result) {

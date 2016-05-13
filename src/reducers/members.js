@@ -32,7 +32,7 @@ import {
                 didInvalidate:false,
             });
          case MEMBERS_SUCCESS:
-            return Obeject.assign({}, state, {
+            return Object.assign({}, state, {
                 isFetching: false,
                 didInvalidate:false,
                 totalCount: action.totalCount,
