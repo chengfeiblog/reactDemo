@@ -1,17 +1,18 @@
-import React, { Component, PropTypes,findDOMNode } from 'react';
+import React, { Component, PropTypes } from 'react';
+import {findDOMNode} from 'react-dom'
 import { connect } from 'react-redux';
 import { login } from '../../actions/auth';
 
 import './login.css';
 const initState = {
-  loginError : null,
+  errorMessage:  null,
   isUsernameError : false,
   isPasswordError : false 
 };
 class Login extends Component {
   constructor(props) {
     super(props);
-    this.state = Object.assgin({}, initState);
+    this.state = Object.assign({}, initState);
     this.handleLogin = this.handleLogin.bind(this);
   }
   /**
@@ -24,10 +25,9 @@ class Login extends Component {
    * 
    */
   componentDidUpdate() {
-    console.log(this.props.loginError);
     if(this.props.loginError === "账户/密码不正确") {
       if(!this.state.isUsernameError) {
-        let newState = Object.assgin({},this.state);
+        let newState = Object.assign({},this.state);
         newState.isUsernameError = true;
         this.setState(newState);
       }
@@ -46,34 +46,37 @@ class Login extends Component {
     }
   }
 
-  handleLogin(event) {
-    event.preventDefault();
-    const username = this.refs.username;
-    const password = this.refs.password;
-    let newState = this.checkLoginFrom(username.value, password.value);
-    this.setState(newState);
-    if(!newState.loginError) {
-      this.props.dispatch(login(username.value, password.value));
-      username.value = '';
-      password.value = '';
-    }
-  }
+  
   /**
    * 校验
    */
   checkLoginFrom(username, password) {
-    let newState = Object.assgin({},initState);
+    let newState = Object.assign({},initState);
     if(username === "") {
-      newState.loginError = "账号必须填写";
+      newState.errorMessage = "账号必须填写";
       newState.isUsernameError = true;
-      return;
-    }
-    if(password === "") {
-      newState.loginError = "密码必须填写";
+      findDOMNode(this.refs.username).focus();
+    }else if(password === "") {
+      newState.errorMessage = "密码必须填写";
       newState.isPasswordError = true;
-      return;
+      findDOMNode(this.refs.password).focus();
     }
     return newState;
+  }
+  /**
+   * 登录
+   */
+  handleLogin(event) {
+    event.preventDefault();
+    const username = this.refs.username;
+    const password = this.refs.password;
+    const rememberMe = this.refs.rememberMe;
+    console.log(rememberMe.value);
+    let newState = this.checkLoginFrom(username.value, password.value);
+    this.setState(newState);
+    if(!newState.errorMessage) {
+      this.props.dispatch(login(username.value, password.value));
+    }
   }
   /**
    * 根据错误返回相对的CSS样式
@@ -81,8 +84,28 @@ class Login extends Component {
   getInputClass(value) {
     return ("form-group" + (value ? "has-error" : ""));
   }
+  /**
+   * 记住密码
+   */
+  rememberMe() {
+    
+  }
   render() {
-    const { user, loginError } = this.props;
+    const { user, loginError} = this.props;
+    let errorLable;
+    if(this.state.errorMessage) {
+      errorLable = (      
+          <div className="alert alert-danger">
+                    {this.state.errorMessage}  
+          </div>
+      );
+    } else if(loginError) {
+      errorLable = (
+          <div className="alert alert-danger">
+                    {loginError.message}  
+          </div>
+      );
+    }
     return (
       <div className="container">
         <div className="row">
@@ -90,29 +113,24 @@ class Login extends Component {
             <div className="card">
               <div className="card-header">请登录</div>
               <form className="card-block">
-                <div className="input-group">
-                  <span className="input-group-addon"><i className="fa fa-user"/></span>
-                  <input type="text" ref="username" className="form-control" placeholder="请输入用户名"/>
+                <div className={this.getInputClass(this.state.isUsernameError)}>
+                  <div className="input-group">
+                    <span className="input-group-addon"><i className="fa fa-user"/></span>
+                    <input type="text" ref="username" className="form-control" placeholder="请输入用户名"/>
+                  </div>
                 </div>
-
-                <div className="input-group">
-                  <span className="input-group-addon"><i className="fa fa-lock"/></span>
-                  <input type="password" ref="password" className="form-control" placeholder="请输入密码"/>
-                </div>
-
+                <div className={this.getInputClass(this.state.isPasswordError)}>     
+                  <div className="input-group">
+                    <span className="input-group-addon"><i className="fa fa-lock"/></span>
+                    <input type="password" ref="password" className="form-control" placeholder="请输入密码"/>
+                  </div>
+                </div>      
                 <div className="checkbox">
                   <label>
-                    <input type="checkbox" value="remember-me"/> 记住我
+                    <input type="checkbox" value="rememberMe" ref="rememberMe" onClick = {this.rememberMe()}  /> 记住我
                   </label>
                 </div>
-
-                {
-                  !user && loginError &&
-                  <div className="alert alert-danger">
-                    {loginError.message}
-                  </div>
-                }
-
+                {errorLable}
                 <button className="btn btn-primary btn-block" onClick={this.handleLogin}><i className="fa fa-sign-in"/>{' '}登录</button>
               </form>
             </div>
